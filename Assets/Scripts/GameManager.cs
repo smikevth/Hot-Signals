@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
-    private float timer = 10.0f;
+    private float timer = 60.0f;
     [SerializeField] private TMP_Text timeText;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -38,7 +38,8 @@ public class GameManager : MonoBehaviour
         if(isGameActive)
         {
             //place object in random position !!! NEED TO CHANGE THIS TO BE RANDOM POS
-            currentObjective = Instantiate(objectivePrefab, areaBounds, objectivePrefab.transform.rotation);
+            Vector2 randomPosition = new Vector2(Random.Range(-areaBounds.x, areaBounds.x), Random.Range(-areaBounds.y, areaBounds.y));
+            currentObjective = Instantiate(objectivePrefab, randomPosition, objectivePrefab.transform.rotation);
             Debug.Log("Objective placed");
         }
     }
