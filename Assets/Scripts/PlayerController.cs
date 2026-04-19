@@ -17,12 +17,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float farDistance = 10.0f;
     [SerializeField] private float distanceRange = 9.0f;
     [SerializeField] private float closeDistance = 1.0f;
+    private AudioSource signalPing;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         rb = GetComponent<Rigidbody2D>();
+        signalPing = signal.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -117,7 +119,6 @@ public class PlayerController : MonoBehaviour
                 red = distance / farDistance;
             }
         }
-        //float red = Mathf.Lerp(0, 255, farness);
         float green = 1.0f;
         if (distance > closeDistance)
         {
@@ -130,10 +131,10 @@ public class PlayerController : MonoBehaviour
                 green = 1 - ((distance - closeDistance)/(distanceRange - closeDistance));
             }
         }
-        //float green = Mathf.Lerp(0, 255, closeness);
         Color signalColor = new Color(red, green, 0.0f);
         //Debug.Log("Red: " + red + " Green: " + green + " Distance: " + distance);
         signal.GetComponent<SpriteRenderer>().color = signalColor;
+        signalPing.pitch = Mathf.Lerp(0.5f, 3.0f, 1 - (distance/farDistance));
         signal.SetActive(true);
     }
 }
