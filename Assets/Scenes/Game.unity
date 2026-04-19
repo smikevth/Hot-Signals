@@ -664,7 +664,7 @@ GameObject:
   - component: {fileID: 331397534}
   - component: {fileID: 331397533}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: AdmiralText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -711,8 +711,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Placeholder text, press space to advance
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
+  m_sharedMaterial: {fileID: 5721149649943353228, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -736,13 +736,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 26.9
+  m_fontSizeBase: 26.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -778,7 +778,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &331397534
@@ -806,7 +806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &430049018
 RectTransform:
   m_ObjectHideFlags: 0
@@ -846,10 +846,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Time Left:'
+  m_text: 'Time Left: 50'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
+  m_sharedMaterial: {fileID: 5721149649943353228, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -890,7 +890,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 1
+  m_TextWrappingMode: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -912,7 +912,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -25.702858, w: 21.271341}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1344,7 +1344,7 @@ GameObject:
   - component: {fileID: 1120901731}
   - component: {fileID: 1120901730}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: CaptainText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1391,8 +1391,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Placeholder text, press space to advance
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
+  m_sharedMaterial: {fileID: 5721149649943353228, guid: a66ea0fb4b980ce41b9ec662a701c999, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1416,13 +1416,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
-  m_fontSizeBase: 25
+  m_fontSize: 26.9
+  m_fontSizeBase: 26.9
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 32
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
   m_textAlignment: 65535
@@ -1502,8 +1502,17 @@ MonoBehaviour:
   objectivePrefab: {fileID: 190149173983490682, guid: 5b035c16d5f4a664f9e5a4eb87d4a3eb, type: 3}
   isGameActive: 0
   timeText: {fileID: 430049019}
-  captainDialogue: {fileID: 456503319}
-  admiralDialogue: {fileID: 1612042391}
+  dialogueBoxes:
+  - {fileID: 456503319}
+  - {fileID: 1612042391}
+  dialogueTextAreas:
+  - {fileID: 1120901730}
+  - {fileID: 331397533}
+  isDialogueOpen: 0
+  introDialogues:
+  - {fileID: 11400000, guid: 61849b1d1d2817d48b951d084847fb5b, type: 2}
+  - {fileID: 11400000, guid: 2fd8c54dce107084eb2579ee5f37476b, type: 2}
+  - {fileID: 11400000, guid: c5416b5854c01d84e8a8803ec8856f63, type: 2}
 --- !u!4 &1142378377
 Transform:
   m_ObjectHideFlags: 0

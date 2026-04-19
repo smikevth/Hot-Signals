@@ -11,10 +11,14 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private float timer = 60.0f;
     [SerializeField] private TMP_Text timeText;
-    [SerializeField] private GameObject captainDialogue;
-    [SerializeField] private GameObject admiralDialogue;
+    [SerializeField] private GameObject[] dialogueBoxes;
+    [SerializeField] private TMP_Text[] dialogueTextAreas; 
+    //[SerializeField] private GameObject captainDialogue;
+    //[SerializeField] private GameObject admiralDialogue;
     [HideInInspector] public bool isDialogueOpen;
     private int dialogueIndex = 0;
+
+    [SerializeField] private Dialogue[] introDialogues; 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -62,44 +66,52 @@ public class GameManager : MonoBehaviour
 
     private void StartIntro()
     {
-        captainDialogue.SetActive(true);
+        //captainDialogue.SetActive(true);
         isDialogueOpen = true;
-        
+        SetDialogue();
     }
 
     public void AdvanceDialogue()
     {
-        switch(dialogueIndex)
+        dialogueIndex++;
+        if (dialogueIndex < introDialogues.Length)
         {
-            case 0:
-                captainDialogue.SetActive(false);
-                admiralDialogue.SetActive(true);
-                dialogueIndex++;
-                break;
-            case 1:
-                captainDialogue.SetActive(true);
-                admiralDialogue.SetActive(false);
-                dialogueIndex++;
-                break;
-            case 2:
-                captainDialogue.SetActive(false);
-                admiralDialogue.SetActive(true);
-                dialogueIndex++;
-                break;
-            case 3:
-                captainDialogue.SetActive(false);
-                admiralDialogue.SetActive(false);
-                dialogueIndex++;
-                StartRound();
-                break;
+            SetDialogue();
         }
+        else
+        {
+            for (int i = 0; i < dialogueBoxes.Length; i++)
+            {
+                dialogueBoxes[i].SetActive(false);
+            }
+            StartRound();
+        }
+    }
+
+    private void SetDialogue()
+    {
+        Dialogue currentDialogue = introDialogues[dialogueIndex];
+        for (int i=0; i<dialogueBoxes.Length; i++)
+        {
+            if(i != currentDialogue.Speaker)
+            {
+                dialogueBoxes[i].SetActive(false);
+            }
+            else
+            {
+                dialogueBoxes[i].SetActive(true);
+            }
+        }
+        dialogueTextAreas[currentDialogue.Speaker].SetText(currentDialogue.Text);
     }
 
     private void StartRound()
     {
+        timeText.gameObject.SetActive(true);
         isGameActive = true;
         isDialogueOpen = false;
         PlaceObjective();
+
     }
 
     private void RoundOver()
