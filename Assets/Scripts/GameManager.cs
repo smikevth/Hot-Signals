@@ -9,17 +9,17 @@ public class GameManager : MonoBehaviour
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
-    private float timer = 60.0f;
+    private float timerInit = 10.0f;
+    private float timer;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private GameObject[] dialogueBoxes;
     [SerializeField] private TMP_Text[] dialogueTextAreas; 
-    //[SerializeField] private GameObject captainDialogue;
-    //[SerializeField] private GameObject admiralDialogue;
     [HideInInspector] public bool isDialogueOpen;
     private int dialogueIndex = 0;
-
-    [SerializeField] private Dialogue[] introDialogues; 
-
+    [SerializeField] private Dialogue[] introDialogues;
+    [SerializeField] private Dialogue[] postRoundDialogues;
+    private bool isIntro = false;
+    private bool isPostRound = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     {
         if(isGameActive)
         {
-            //place object in random position !!! NEED TO CHANGE THIS TO BE RANDOM POS
+            //place object in random position
             Vector2 randomPosition = new Vector2(Random.Range(-areaBounds.x, areaBounds.x), Random.Range(-areaBounds.y, areaBounds.y));
             currentObjective = Instantiate(objectivePrefab, randomPosition, objectivePrefab.transform.rotation);
             Debug.Log("Objective placed");
@@ -66,34 +66,71 @@ public class GameManager : MonoBehaviour
 
     private void StartIntro()
     {
-        //captainDialogue.SetActive(true);
         isDialogueOpen = true;
-        SetDialogue();
+        isIntro = true;
+        SetDialogue(introDialogues[dialogueIndex]);
     }
 
     public void AdvanceDialogue()
     {
         dialogueIndex++;
-        if (dialogueIndex < introDialogues.Length)
+        Dialogue[] currentDialogues = null;
+        if(isIntro)
         {
-            SetDialogue();
+            currentDialogues = introDialogues;
+        }
+        else if(isPostRound)
+        {
+            currentDialogues = postRoundDialogues;
+        }
+        if(currentDialogues != null)
+        {
+            Debug.Log("test1");
+            if (dialogueIndex < currentDialogues.Length)
+            {
+                Debug.Log("test2");
+                SetDialogue(currentDialogues[dialogueIndex]);
+            }
+            else
+            {
+                Debug.Log("test3");
+                CloseDialogues();
+                if(isIntro)
+                {
+                    Debug.Log("test4");
+                    isIntro = false;
+                    StartRound();
+                }
+                else if(isPostRound)
+                {
+                    Debug.Log("test5");
+                    //will add post round summary here
+                    isPostRound = false;
+                    StartRound();
+                }
+            }
         }
         else
         {
-            for (int i = 0; i < dialogueBoxes.Length; i++)
-            {
-                dialogueBoxes[i].SetActive(false);
-            }
-            StartRound();
+            Debug.Log("currentDialogues is null for some reason");
         }
     }
 
-    private void SetDialogue()
+    //closes all dialogue windows
+    private void CloseDialogues()
     {
-        Dialogue currentDialogue = introDialogues[dialogueIndex];
+        for (int i = 0; i < dialogueBoxes.Length; i++)
+        {
+            dialogueBoxes[i].SetActive(false);
+        }
+    }
+
+    private void SetDialogue(Dialogue dialogue)
+    {
+        //Dialogue currentDialogue = introDialogues[dialogueIndex];
         for (int i=0; i<dialogueBoxes.Length; i++)
         {
-            if(i != currentDialogue.Speaker)
+            if(i != dialogue.Speaker)
             {
                 dialogueBoxes[i].SetActive(false);
             }
@@ -102,11 +139,13 @@ public class GameManager : MonoBehaviour
                 dialogueBoxes[i].SetActive(true);
             }
         }
-        dialogueTextAreas[currentDialogue.Speaker].SetText(currentDialogue.Text);
+        dialogueTextAreas[dialogue.Speaker].SetText(dialogue.Text);
     }
 
     private void StartRound()
     {
+        score = 0;
+        timer = timerInit;
         timeText.gameObject.SetActive(true);
         isGameActive = true;
         isDialogueOpen = false;
@@ -118,5 +157,20 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("ended. score: " + score);
         isGameActive = false;
+        //destroy objective
+        Destroy(currentObjective);
+        //dialogue from admiral
+        isPostRound = true;
+        dialogueIndex = 0;
+        SetDialogue(postRoundDialogues[dialogueIndex]);
+        isDialogueOpen = true;
+        //move ship off screen?
+
+        //show results screen
+
+        //upgrades? new crew?
+
+        //next round
+
     }
 }

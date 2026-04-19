@@ -81,8 +81,6 @@ public class PlayerController : MonoBehaviour
             GameObject objective = GameObject.FindGameObjectWithTag("Objective");
             float distance = Mathf.Abs((objective.transform.position - transform.position).magnitude);
             //show scan effect based on distance
-            //Debug.Log("distance: " + distance);
-
 
             if (distance <= tractorDistance)
             {
@@ -119,7 +117,6 @@ public class PlayerController : MonoBehaviour
             objective.transform.position = Vector3.MoveTowards(objective.transform.position, transform.position, step);
             yield return null;
         }
-        //yield return new WaitForSeconds(tractorTime);
         //destroy objective and end scanning mode when done
         gameManager.ObjectiveCollected();
         isScanning = false;

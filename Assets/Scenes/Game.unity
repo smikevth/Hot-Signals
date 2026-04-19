@@ -1513,6 +1513,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 61849b1d1d2817d48b951d084847fb5b, type: 2}
   - {fileID: 11400000, guid: 2fd8c54dce107084eb2579ee5f37476b, type: 2}
   - {fileID: 11400000, guid: c5416b5854c01d84e8a8803ec8856f63, type: 2}
+  postRoundDialogues:
+  - {fileID: 11400000, guid: 3a08022e1707c7c459d0030806a6aae3, type: 2}
 --- !u!4 &1142378377
 Transform:
   m_ObjectHideFlags: 0
