@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
 
             if (distance <= tractorDistance)
             {
-                yield return TractorBeam(objective);
+                yield return TractorBeam(objective, distance);
             }
             else
             {
@@ -83,15 +83,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator TractorBeam(GameObject objective)
+    IEnumerator TractorBeam(GameObject objective, float distance)
     {
         //show objective
         objective.transform.GetChild(0).gameObject.SetActive(true);
         //move objective towards ship and show beam effect
-        Debug.Log("Beaming up");
+        float timer = 0.0f;
+        while (timer < tractorTime)
+        {
+            timer += Time.deltaTime;
+            float step = distance * (Time.deltaTime / tractorTime);
+            objective.transform.position = Vector3.MoveTowards(objective.transform.position, transform.position, step);
+            yield return null;
+        }
+        //yield return new WaitForSeconds(tractorTime);
         //destroy objective and end scanning mode when done
-        yield return new WaitForSeconds(tractorTime);
-        //Destroy(GameObject.FindGameObjectWithTag("Objective"));
         gameManager.ObjectiveCollected();
         isScanning = false;
     }
