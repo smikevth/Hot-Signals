@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float distanceRange = 9.0f;
     [SerializeField] private float closeDistance = 1.0f;
     private AudioSource signalPing;
+    [SerializeField] private GameObject thruster;
+    [SerializeField] private GameObject tractorBeam;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -36,23 +38,35 @@ public class PlayerController : MonoBehaviour
     void MoveShip()
     {
         //only move if scan/tractor is not active
-        if(gameManager.isGameActive && !isScanning)
+        if(gameManager.isGameActive)
         {
-            //read move action
-            Vector2 moveDirection = moveAction.ReadValue<Vector2>().normalized;
-            //rotate
-            if(moveAction.IsPressed())
+            //show/hide thrusters
+            if (moveAction.WasPressedThisFrame())
             {
-                transform.up = moveDirection;
+                thruster.SetActive(true);
             }
-            //move
-            rb.AddForce(moveDirection * moveForce);
+            if (moveAction.WasReleasedThisFrame())
+            {
+                thruster.SetActive(false);
+            }
+            if (!isScanning)
+            {
+                //read move action
+                Vector2 moveDirection = moveAction.ReadValue<Vector2>().normalized;
+                //rotate
+                if (moveAction.IsPressed())
+                {
+                    transform.up = moveDirection;
+                }
+                //move
+                rb.AddForce(moveDirection * moveForce);
 
-            //limit speed
-            if (rb.linearVelocity.magnitude > maxSpeed)
-            {
-                rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
-            }
+                //limit speed
+                if (rb.linearVelocity.magnitude > maxSpeed)
+                {
+                    rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+                }
+            }  
         }
     }
 
@@ -89,6 +103,8 @@ public class PlayerController : MonoBehaviour
     {
         //show objective
         objective.transform.GetChild(0).gameObject.SetActive(true);
+        //show tractor beam
+        tractorBeam.SetActive(true);
         //move objective towards ship and show beam effect
         float timer = 0.0f;
         while (timer < tractorTime)
@@ -102,6 +118,8 @@ public class PlayerController : MonoBehaviour
         //destroy objective and end scanning mode when done
         gameManager.ObjectiveCollected();
         isScanning = false;
+        //hide tractor beam
+        tractorBeam.SetActive(false);
     }
 
     void SetRingColor(float distance)
