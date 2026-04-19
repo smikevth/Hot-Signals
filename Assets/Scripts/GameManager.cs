@@ -11,12 +11,15 @@ public class GameManager : MonoBehaviour
     private int score = 0;
     private float timer = 60.0f;
     [SerializeField] private TMP_Text timeText;
+    [SerializeField] private GameObject captainDialogue;
+    [SerializeField] private GameObject admiralDialogue;
+    [HideInInspector] public bool isDialogueOpen;
+    private int dialogueIndex = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        isGameActive = true;
-        PlaceObjective();
+        StartIntro();
     }
 
     // Update is called once per frame
@@ -54,6 +57,48 @@ public class GameManager : MonoBehaviour
             Destroy(currentObjective);
         }
         //place new objective
+        PlaceObjective();
+    }
+
+    private void StartIntro()
+    {
+        captainDialogue.SetActive(true);
+        isDialogueOpen = true;
+        
+    }
+
+    public void AdvanceDialogue()
+    {
+        switch(dialogueIndex)
+        {
+            case 0:
+                captainDialogue.SetActive(false);
+                admiralDialogue.SetActive(true);
+                dialogueIndex++;
+                break;
+            case 1:
+                captainDialogue.SetActive(true);
+                admiralDialogue.SetActive(false);
+                dialogueIndex++;
+                break;
+            case 2:
+                captainDialogue.SetActive(false);
+                admiralDialogue.SetActive(true);
+                dialogueIndex++;
+                break;
+            case 3:
+                captainDialogue.SetActive(false);
+                admiralDialogue.SetActive(false);
+                dialogueIndex++;
+                StartRound();
+                break;
+        }
+    }
+
+    private void StartRound()
+    {
+        isGameActive = true;
+        isDialogueOpen = false;
         PlaceObjective();
     }
 

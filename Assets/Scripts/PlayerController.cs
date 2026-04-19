@@ -97,6 +97,11 @@ public class PlayerController : MonoBehaviour
                 signal.SetActive(false);
             }
         }
+        else if(gameManager.isDialogueOpen)
+        {
+            gameManager.AdvanceDialogue();
+            yield return null;
+        }
     }
 
     IEnumerator TractorBeam(GameObject objective, float distance)
