@@ -22,6 +22,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject tractorBeam;
     public bool isTractoring = false;
 
+    //upgrades
+    public float speedFactor = 1.0f;
+    public float tractorFactor = 1.0f;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -63,9 +67,9 @@ public class PlayerController : MonoBehaviour
                 rb.AddForce(moveDirection * moveForce);
 
                 //limit speed
-                if (rb.linearVelocity.magnitude > maxSpeed)
+                if (rb.linearVelocity.magnitude > (maxSpeed * speedFactor))
                 {
-                    rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
+                    rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed * speedFactor;
                 }
             }  
         }
@@ -83,7 +87,7 @@ public class PlayerController : MonoBehaviour
             float distance = Mathf.Abs((objective.transform.position - transform.position).magnitude);
             //show scan effect based on distance
 
-            if (distance <= tractorDistance)
+            if (distance <= (tractorDistance * tractorFactor))
             {
                 yield return TractorBeam(objective, distance);
             }
@@ -112,10 +116,10 @@ public class PlayerController : MonoBehaviour
         isTractoring = true;
         //move objective towards ship and show beam effect
         float timer = 0.0f;
-        while (timer < tractorTime)
+        while (timer < (tractorTime/tractorFactor))
         {
             timer += Time.deltaTime;
-            float step = distance * (Time.deltaTime / tractorTime);
+            float step = distance * (Time.deltaTime / (tractorTime / tractorFactor));
             objective.transform.position = Vector3.MoveTowards(objective.transform.position, transform.position, step);
             yield return null;
         }

@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
-    private float timerInit = 10.0f;
+    private float timerInit = 30.0f;
     private float timer;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private GameObject[] dialogueBoxes;
@@ -21,10 +21,12 @@ public class GameManager : MonoBehaviour
     private int dialogueIndex = 0;
     [SerializeField] private Dialogue[] introDialogues;
     [SerializeField] private Dialogue[] postRoundDialogues;
+    [SerializeField] private Dialogue[] crewRescueDialogues;
     private bool isIntro = false;
     private bool isPostRound = false;
     private bool isRoundSummary = false;
     [SerializeField] private GameObject roundSummaryBox;
+    [SerializeField] private GameObject distressBox;
     [SerializeField] private TMP_Text scoreText;
     private float textPause = 1.0f; //time to wait for text to be passable
     [SerializeField] private PlayerController player;
@@ -132,13 +134,29 @@ public class GameManager : MonoBehaviour
                 }
                 else if(isPostRound)
                 {
-                    //will add post round summary here
+                    //post round summary
                     if(isRoundSummary)
                     {
                         //check if new crew member picked up
                         if(newCrew)
                         {
                             roundSummaryBox.SetActive(false);
+                            //apply upgrade and set dialogue based on crew progression
+                            switch(nextCrewIndex)
+                            {
+                                case 0:
+                                    player.speedFactor = 2.0f;
+                                    break;
+                                case 1:
+                                    player.tractorFactor = 2.0f;
+                                    break;
+                                case 2:
+                                    timerInit = 60.0f;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            dialogueTextAreas[2].text = crewRescueDialogues[nextCrewIndex].Text;
                             dialogueBoxes[2].SetActive(true);
                             newCrew = false;
                             nextCrewIndex++;
@@ -191,6 +209,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = score.ToString();
         //later will list various collectibles the player picked up.
         roundSummaryBox.SetActive(true);
+        distressBox.SetActive(newCrew);
         isRoundSummary = true;
         yield return new WaitForSeconds(textPause);
         isDialogueOpen = true;
