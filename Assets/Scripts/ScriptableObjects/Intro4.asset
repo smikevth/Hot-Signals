@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Intro4
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   Speaker: 1
-  Text: Nah, fool. Signals! As in distress or lost cargo signals. Go check 'em out.
+  Text: Nah, fool. Signals! As in distress or lost cargo signals. Go check 'em out
+    before the next enemy patrol.

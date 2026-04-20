@@ -6,20 +6,21 @@ public class PlayerController : MonoBehaviour
 {
     private InputAction moveAction;
     private Rigidbody2D rb;
-    [SerializeField] private float moveForce = 1.0f;
-    [SerializeField] private float maxSpeed = 5f;
+    private float moveForce = 1.0f;
+    private float maxSpeed = 2.5f;
     private bool isScanning = false;
-    [SerializeField] private float scanTime = 1.0f;
-    [SerializeField] private float tractorDistance = 1.0f; //max distance to be able to pick up objective
-    [SerializeField] private float tractorTime = 2.0f;
+    private float scanTime = 1.0f;
+    private float tractorDistance = 1.0f; //max distance to be able to pick up objective
+    private float tractorTime = 2.0f;
     [SerializeField] private GameManager gameManager;
     [SerializeField] private GameObject signal;
-    [SerializeField] private float farDistance = 10.0f;
-    [SerializeField] private float distanceRange = 9.0f;
-    [SerializeField] private float closeDistance = 1.0f;
+    private float farDistance = 10.0f;
+    private float distanceRange = 8.0f;
+    private float closeDistance = 1.0f;
     private AudioSource signalPing;
     [SerializeField] private GameObject thruster;
     [SerializeField] private GameObject tractorBeam;
+    public bool isTractoring = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -108,6 +109,7 @@ public class PlayerController : MonoBehaviour
         objective.transform.GetChild(0).gameObject.SetActive(true);
         //show tractor beam
         tractorBeam.SetActive(true);
+        isTractoring = true;
         //move objective towards ship and show beam effect
         float timer = 0.0f;
         while (timer < tractorTime)
@@ -119,6 +121,7 @@ public class PlayerController : MonoBehaviour
         }
         //destroy objective and end scanning mode when done
         gameManager.ObjectiveCollected();
+        isTractoring = false;
         isScanning = false;
         //hide tractor beam
         tractorBeam.SetActive(false);

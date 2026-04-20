@@ -1,12 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Vector2 areaBounds = new Vector2(8.0f, 4.0f); //max x and y of objective spawn area
     [SerializeField] private GameObject objectivePrefab;
+    [SerializeField] private GameObject crewPrefab;
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
@@ -25,10 +27,20 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject roundSummaryBox;
     [SerializeField] private TMP_Text scoreText;
     private float textPause = 1.0f; //time to wait for text to be passable
+    [SerializeField] private PlayerController player;
+    private int toNextCrew; //how many objects to collect until the next crew memeber spawns
+    private List<int> nextCrewiIntervals = new List<int>(); //list to store crew progression
+    private bool newCrew = false; //goes true when crew member picked up this round
+    private int nextCrewIndex = 0; //where in the next crew progression we are
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        nextCrewiIntervals.Add(0);
+        nextCrewiIntervals.Add(1);
+        nextCrewiIntervals.Add(3);
+        nextCrewiIntervals.Add(5);
+        toNextCrew = nextCrewiIntervals[0];
         StartIntro();
     }
 
@@ -50,9 +62,18 @@ public class GameManager : MonoBehaviour
     {
         if(isGameActive)
         {
+            
             //place object in random position
             Vector2 randomPosition = new Vector2(Random.Range(-areaBounds.x, areaBounds.x), Random.Range(-areaBounds.y, areaBounds.y));
-            currentObjective = Instantiate(objectivePrefab, randomPosition, objectivePrefab.transform.rotation);
+            //check if it's time to spawn a crew member
+            if (toNextCrew == 0)
+            {
+                currentObjective = Instantiate(crewPrefab, randomPosition, crewPrefab.transform.rotation);
+            }
+            else
+            {
+                currentObjective = Instantiate(objectivePrefab, randomPosition, objectivePrefab.transform.rotation);
+            }
             Debug.Log("Objective placed");
         }
     }
@@ -61,6 +82,12 @@ public class GameManager : MonoBehaviour
     {
         //increment score !!! LATER WILL CHANGE TO COLLECT SPECIFIC COLLECTIBLE/CREW MEMEBER FROM POOL
         score++;
+        //check if crew member was picked up, will only be when tonextcrew is 0
+        if(toNextCrew == 0)
+        {
+            newCrew = true;
+        }
+        toNextCrew--;
         // destroy objective
         if(currentObjective != null)
         {
@@ -108,11 +135,32 @@ public class GameManager : MonoBehaviour
                     //will add post round summary here
                     if(isRoundSummary)
                     {
-                        isPostRound = false;
-                        roundSummaryBox.SetActive(false);
-                        isRoundSummary = false;
-                        StartRound();
-
+                        //check if new crew member picked up
+                        if(newCrew)
+                        {
+                            roundSummaryBox.SetActive(false);
+                            dialogueBoxes[2].SetActive(true);
+                            newCrew = false;
+                            nextCrewIndex++;
+                            if(nextCrewIndex < nextCrewiIntervals.Count)
+                            {
+                                toNextCrew = nextCrewiIntervals[nextCrewIndex];
+                            }
+                            else
+                            {
+                                //end of progression
+                                Debug.Log("that's all folks");
+                            }
+                            
+                        }
+                        else
+                        {
+                            isPostRound = false;
+                            roundSummaryBox.SetActive(false);
+                            dialogueBoxes[2].SetActive(false);
+                            isRoundSummary = false;
+                            StartRound();
+                        }
                     }
                     else
                     {
@@ -178,6 +226,11 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RoundOver()
     {
+        //wait for tractor beam to finish
+        while(player.isTractoring)
+        {
+            yield return null;
+        }
         Debug.Log("ended. score: " + score);
         isGameActive = false;
         //destroy objective
@@ -199,6 +252,6 @@ public class GameManager : MonoBehaviour
         //upgrades? new crew?
 
         //next round
-
+    
     }
 }
