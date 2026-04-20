@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 
 public class GameManager : MonoBehaviour
@@ -23,6 +24,8 @@ public class GameManager : MonoBehaviour
     private bool isRoundSummary = false;
     [SerializeField] private GameObject roundSummaryBox;
     [SerializeField] private TMP_Text scoreText;
+    private float textPause = 1.0f; //time to wait for text to be passable
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -38,7 +41,7 @@ public class GameManager : MonoBehaviour
             timeText.text = "Time left: " + Mathf.Ceil(timer);
             if(timer <= 0.0f)
             {
-                RoundOver();
+                StartCoroutine(RoundOver());
             }
         }
     }
@@ -113,7 +116,8 @@ public class GameManager : MonoBehaviour
                     }
                     else
                     {
-                        RoundSummary();                     
+                        isDialogueOpen = false;
+                        StartCoroutine(RoundSummary());                     
                     }
                 }
             }
@@ -133,13 +137,15 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void RoundSummary()
+    private IEnumerator RoundSummary()
     {
         //post score
         scoreText.text = score.ToString();
         //later will list various collectibles the player picked up.
         roundSummaryBox.SetActive(true);
         isRoundSummary = true;
+        yield return new WaitForSeconds(textPause);
+        isDialogueOpen = true;
     }
 
     private void SetDialogue(Dialogue dialogue)
@@ -170,7 +176,7 @@ public class GameManager : MonoBehaviour
 
     }
 
-    private void RoundOver()
+    private IEnumerator RoundOver()
     {
         Debug.Log("ended. score: " + score);
         isGameActive = false;
@@ -183,6 +189,8 @@ public class GameManager : MonoBehaviour
         isPostRound = true;
         dialogueIndex = 0;
         SetDialogue(postRoundDialogues[dialogueIndex]);
+        //wait a sec to enable skipping dialogue
+        yield return new WaitForSeconds(textPause);
         isDialogueOpen = true;
         //move ship off screen?
 
