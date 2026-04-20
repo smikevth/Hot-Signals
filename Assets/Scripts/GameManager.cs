@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
-    private float timerInit = 60.0f;
+    private float timerInit = 10.0f;
     private float timer;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private GameObject[] dialogueBoxes;
@@ -107,6 +107,7 @@ public class GameManager : MonoBehaviour
                     {
                         isPostRound = false;
                         roundSummaryBox.SetActive(false);
+                        isRoundSummary = false;
                         StartRound();
 
                     }

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Intro2
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
   Speaker: 1
-  Text: The admiral says some stuff.
+  Text: 'Captain Corwen, there''s been a space battle in your sector. The computer
+    is showing hot singals in your area. '

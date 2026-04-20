@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 16126455704a3c648aa5371249fa4042, type: 3}
-  m_Name: Intro3
+  m_Name: Intro5
   m_EditorClassIdentifier: Assembly-CSharp::Dialogue
-  Speaker: 0
-  Text: Oh, boss. You can't click on those links, man. You'll get a virus. And the
-    singles on those sites are never that hot.
+  Speaker: 1
+  Text: And remember, it's dark in space so you can't see them. Check the color and
+    pitch of your scanner to see how close you are.
