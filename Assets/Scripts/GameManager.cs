@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public bool isGameActive = false;
     private GameObject currentObjective;
     private int score = 0;
-    private float timerInit = 10.0f;
+    private float timerInit = 60.0f;
     private float timer;
     [SerializeField] private TMP_Text timeText;
     [SerializeField] private GameObject[] dialogueBoxes;
@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Dialogue[] postRoundDialogues;
     private bool isIntro = false;
     private bool isPostRound = false;
+    private bool isRoundSummary = false;
+    [SerializeField] private GameObject roundSummaryBox;
+    [SerializeField] private TMP_Text scoreText;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -85,28 +88,32 @@ public class GameManager : MonoBehaviour
         }
         if(currentDialogues != null)
         {
-            Debug.Log("test1");
             if (dialogueIndex < currentDialogues.Length)
             {
-                Debug.Log("test2");
                 SetDialogue(currentDialogues[dialogueIndex]);
             }
             else
             {
-                Debug.Log("test3");
                 CloseDialogues();
                 if(isIntro)
                 {
-                    Debug.Log("test4");
                     isIntro = false;
                     StartRound();
                 }
                 else if(isPostRound)
                 {
-                    Debug.Log("test5");
                     //will add post round summary here
-                    isPostRound = false;
-                    StartRound();
+                    if(isRoundSummary)
+                    {
+                        isPostRound = false;
+                        roundSummaryBox.SetActive(false);
+                        StartRound();
+
+                    }
+                    else
+                    {
+                        RoundSummary();                     
+                    }
                 }
             }
         }
@@ -123,6 +130,15 @@ public class GameManager : MonoBehaviour
         {
             dialogueBoxes[i].SetActive(false);
         }
+    }
+
+    private void RoundSummary()
+    {
+        //post score
+        scoreText.text = score.ToString();
+        //later will list various collectibles the player picked up.
+        roundSummaryBox.SetActive(true);
+        isRoundSummary = true;
     }
 
     private void SetDialogue(Dialogue dialogue)
@@ -158,7 +174,10 @@ public class GameManager : MonoBehaviour
         Debug.Log("ended. score: " + score);
         isGameActive = false;
         //destroy objective
-        Destroy(currentObjective);
+        if (currentObjective != null)
+        {
+            Destroy(currentObjective);
+        }
         //dialogue from admiral
         isPostRound = true;
         dialogueIndex = 0;
