@@ -76,7 +76,6 @@ public class GameManager : MonoBehaviour
             {
                 currentObjective = Instantiate(objectivePrefab, randomPosition, objectivePrefab.transform.rotation);
             }
-            Debug.Log("Objective placed");
         }
     }
 
@@ -167,7 +166,7 @@ public class GameManager : MonoBehaviour
                             else
                             {
                                 //end of progression
-                                Debug.Log("that's all folks");
+
                             }
                             
                         }
@@ -250,7 +249,6 @@ public class GameManager : MonoBehaviour
         {
             yield return null;
         }
-        Debug.Log("ended. score: " + score);
         isGameActive = false;
         //destroy objective
         if (currentObjective != null)

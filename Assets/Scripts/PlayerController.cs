@@ -64,7 +64,7 @@ public class PlayerController : MonoBehaviour
                     transform.up = moveDirection;
                 }
                 //move
-                rb.AddForce(moveDirection * moveForce);
+                rb.AddForce(moveDirection * moveForce * speedFactor);
 
                 //limit speed
                 if (rb.linearVelocity.magnitude > (maxSpeed * speedFactor))
